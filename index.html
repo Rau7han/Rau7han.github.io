@@ -1,1 +1,624 @@
-hello world
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Name - Portfolio</title>
+    <style>
+        /* --- Global Styles & Variables --- */
+        :root {
+            --primary-color: #3498db; /* A nice blue */
+            --secondary-color: #2ecc71; /* A complementary green */
+            --background-dark: #1A1A2E; /* Dark background */
+            --background-light: #16213E; /* Lighter card/section background */
+            --text-color: #EAEAEA;
+            --text-muted-color: #A0A0A0;
+            --card-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2.2rem; }
+        h3 { font-size: 1.5rem; color: var(--secondary-color); }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-muted-color);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        section {
+            padding: 60px 0;
+            opacity: 0; /* Initially hidden for scroll animation */
+            transform: translateY(30px); /* Initially moved down */
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            background: rgba(22, 33, 62, 0.85); /* Semi-transparent background-light */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            color: #fff;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Hero Section --- */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--background-dark) 0%, var(--background-light) 100%);
+            padding-top: 80px; /* Account for fixed nav */
+        }
+
+        #hero .hero-content {
+            max-width: 700px;
+        }
+
+        #hero img.profile-pic {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-color);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 25px rgba(52, 152, 219, 0.5);
+        }
+
+        #hero h1 {
+            color: var(--text-color);
+            font-size: 3.5rem; /* Larger for hero */
+        }
+         #hero h1 .highlight {
+            color: var(--primary-color);
+        }
+
+        #hero p.tagline {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted-color);
+        }
+
+        .social-links a {
+            margin: 0 12px;
+            font-size: 1.8rem;
+            display: inline-block;
+            transition: transform var(--transition-speed) ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2) translateY(-2px);
+        }
+        /* Simple SVG Icons for social links - replace with your actual icons or FontAwesome if preferred */
+        .social-links .icon-github:before { content: 'GH'; font-family: monospace; /* placeholder */}
+        .social-links .icon-linkedin:before { content: 'LI'; font-family: monospace; /* placeholder */}
+        .social-links .icon-twitter:before { content: 'TW'; font-family: monospace; /* placeholder */}
+
+
+        /* --- About Section --- */
+        #about {
+            background-color: var(--background-light);
+        }
+        #about .about-content {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        #about .about-text {
+            flex: 2;
+        }
+        #about .about-image-container {
+            flex: 1;
+            text-align: center;
+        }
+        #about .about-image {
+            max-width: 250px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+
+
+        /* --- Skills Section --- */
+        #skills .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        #skills .skill-item {
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+
+        #skills .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+
+        #skills .skill-item i { /* Placeholder for icons, e.g., FontAwesome */
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+         /* Example of using text if no icon library */
+        #skills .skill-item .skill-icon-text {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        #skills .skill-item p {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-bottom: 0;
+        }
+
+        /* --- Projects Section --- */
+        #projects {
+            background-color: var(--background-dark); /* Alternating background */
+        }
+        #projects .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        #projects .project-card {
+            background: var(--background-light);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+        }
+        #projects .project-card:hover {
+             transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        }
+
+        #projects .project-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #projects .project-card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        #projects .project-card-content p {
+            flex-grow: 1; /* Pushes links to the bottom */
+            margin-bottom: 1rem;
+        }
+        #projects .project-links a {
+            margin-right: 10px;
+        }
+
+
+        /* --- Contact Section --- */
+        #contact {
+            background-color: var(--background-light);
+            text-align: center;
+        }
+        #contact p {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1rem;
+        }
+        #contact .contact-links {
+            margin-top: 2rem;
+        }
+        #contact .contact-links a {
+            margin: 0 15px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background: var(--background-dark);
+            border-top: 1px solid #333;
+            color: var(--text-muted-color);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            #hero h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+
+            nav .container {
+                flex-direction: column;
+            }
+            nav ul {
+                margin-top: 10px;
+                justify-content: center;
+                width: 100%;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+
+            #hero {
+                padding-top: 120px; /* Adjust for taller nav */
+            }
+            #hero img.profile-pic {
+                width: 130px;
+                height: 130px;
+            }
+
+            #about .about-content {
+                flex-direction: column;
+            }
+            #about .about-image-container {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #skills .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 1rem;
+            }
+            #skills .skill-item {
+                padding: 15px;
+            }
+             #skills .skill-item .skill-icon-text, #skills .skill-item i {
+                font-size: 2rem;
+            }
+            #projects .projects-grid {
+                grid-template-columns: 1fr; /* Stack projects on small screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="container">
+            <a href="#hero" class="logo">YourName</a>
+            <ul>
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <img src="https://via.placeholder.com/180" alt="Your Name" class="profile-pic">
+                <h1>Hi, I'm <span class="highlight">Your Name</span></h1>
+                <p class="tagline">I'm a Passionate [Your Role/Title - e.g., Web Developer, Student, Designer]</p>
+                <p>Welcome to my personal space where I share my journey, projects, and skills. Let's build something amazing together!</p>
+                <div class="social-links">
+                    <a href="#" target="_blank" aria-label="GitHub" title="GitHub Profile"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+                    <a href="#" target="_blank" aria-label="LinkedIn" title="LinkedIn Profile"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                    <a href="#" target="_blank" aria-label="Twitter / X" title="Twitter Profile"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+                    </div>
+                <br>
+                <a href="#projects" class="btn">View My Work</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! I'm [Your Name], a [Your Role/Description - e.g., dedicated software engineering student with a knack for problem-solving and a love for creating intuitive web applications]. My journey into the world of tech started with [mention your inspiration or first experience].</p>
+                    <p>I am currently focusing on [mention current learning/focus areas]. I thrive in collaborative environments and I'm always eager to learn new technologies and take on challenging projects. When I'm not coding, I enjoy [Your Hobbies/Interests].</p>
+                    <p>Feel free to explore my projects and skills. I'm always open to connecting with like-minded individuals and discussing potential opportunities or collaborations!</p>
+                </div>
+                <div class="about-image-container">
+                    <img src="https://via.placeholder.com/250x300/2ecc71/ffffff?Text=Your+Image" alt="A picture relevant to you" class="about-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2>My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <div class="skill-icon-text">JS</div>
+                    <p>JavaScript</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">Py</div>
+                    <p>Python</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">H5</div>
+                    <p>HTML5</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">C3</div>
+                    <p>CSS3</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">Rjs</div>
+                    <p>React</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">Njs</div>
+                    <p>Node.js</p>
+                </div>
+                 <div class="skill-item">
+                    <div class="skill-icon-text">SQL</div>
+                    <p>SQL</p>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-icon-text">Git</div>
+                    <p>Git & GitHub</p>
+                </div>
+                </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2>My Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/400x200/3498db/ffffff?Text=Project+Alpha" alt="Project Alpha">
+                    <div class="project-card-content">
+                        <h3>Project Alpha</h3>
+                        <p>A brief description of Project Alpha. What it does, the technologies used, and your role in it. Keep it concise and impactful.</p>
+                        <div class="project-links">
+                            <a href="#" target="_blank" class="btn">View Live</a>
+                            <a href="#" target="_blank">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/400x200/e67e22/ffffff?Text=Project+Beta" alt="Project Beta">
+                    <div class="project-card-content">
+                        <h3>Project Beta</h3>
+                        <p>Description for Project Beta. Highlight key features and achievements. Mention any interesting challenges you overcame.</p>
+                         <div class="project-links">
+                            <a href="#" target="_blank" class="btn">View Live</a>
+                            <a href="#" target="_blank">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="https://via.placeholder.com/400x200/9b59b6/ffffff?Text=Project+Gamma" alt="Project Gamma">
+                    <div class="project-card-content">
+                        <h3>Project Gamma</h3>
+                        <p>This project showcases [specific skill or technology]. It was built using [tech stack] and aimed to solve [problem].</p>
+                         <div class="project-links">
+                            <a href="#" target="_blank" class="btn">View Live</a>
+                            <a href="#" target="_blank">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <p>I'm always excited to connect with new people and discuss ideas, projects, or opportunities. Whether you have a question or just want to say hi, feel free to reach out!</p>
+            <div class="contact-links">
+                <a href="mailto:youremail@example.com" class="btn">Email Me</a>
+                <a href="[Your LinkedIn Profile URL]" target="_blank" style="margin-left:15px; font-size:1.1rem;">LinkedIn</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> Your Name. All rights reserved.</p>
+            <p>Built with HTML, CSS, and a dash of JavaScript.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Smooth Scrolling for Nav Links ---
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Calculate position considering fixed navbar height
+                    const navbarHeight = document.getElementById('navbar').offsetHeight;
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - navbarHeight;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // --- Scroll Animations for Sections (Fade-in) ---
+        const sections = document.querySelectorAll('section');
+        const options = {
+            root: null, // relative to viewport
+            threshold: 0.15, // 15% of section visible
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target); // Stop observing once visible
+            });
+        }, options);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Dynamic Year in Footer ---
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // --- Optional: Simple "typing" effect for tagline (can be expanded) ---
+        const taglineText = "I'm a Passionate [Your Role/Title - e.g., Web Developer, Student, Designer]"; // Make sure this matches HTML
+        const taglineElement = document.querySelector('#hero p.tagline');
+        let i = 0;
+        function typeTagline() {
+            if (i < taglineText.length && taglineElement) {
+                taglineElement.innerHTML = taglineText.substring(0, i + 1) + '<span aria-hidden="true" style="border-right: .15em solid var(--primary-color); animation: blink-caret .75s step-end infinite;"></span>';
+                i++;
+                setTimeout(typeTagline, 70); // Adjust speed of typing
+            } else if (taglineElement) {
+                 taglineElement.innerHTML = taglineText; // Remove cursor when done
+            }
+        }
+        // Clear existing content before typing
+        if(taglineElement) {
+            taglineElement.innerHTML = '';
+            // Add CSS for blinking cursor
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes blink-caret {
+                    from, to { border-color: transparent }
+                    50% { border-color: var(--primary-color); }
+                }
+            `;
+            document.head.appendChild(style);
+            // setTimeout(typeTagline, 500); // Start typing after a short delay
+        }
+        // For simplicity, I'll keep the static tagline from HTML by default.
+        // If you want the typing effect, uncomment the line below and ensure the placeholder in HTML is empty or just a cursor.
+        // window.addEventListener('load', () => setTimeout(typeTagline, 500));
+
+
+        // --- Navbar background change on scroll ---
+        const navbar = document.getElementById('navbar');
+        window.onscroll = function() {
+            if (window.pageYOffset > 50) { // Adjust 50 to when you want the change to happen
+                navbar.style.backgroundColor = 'var(--background-light)'; // More opaque
+            } else {
+                 navbar.style.backgroundColor = 'rgba(22, 33, 62, 0.85)'; // Back to semi-transparent
+            }
+        };
+
+    </script>
+
+</body>
+</html>
